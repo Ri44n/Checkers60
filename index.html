@@ -1,0 +1,15 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Sixty Seconds · Delivery City</title><link rel="stylesheet" href="style.css"></head>
+<body><canvas id="city" aria-label="Top down delivery driving game"></canvas><div class="vignette"></div>
+<header><div class="brand"><span class="brand-icon">60</span><div><b>SIXTY SECONDS<span class="tag">EARLY BUILD 06</span></b><small>A LITTLE CITY. A BIG DELIVERY.</small></div></div><div class="shift"><i></i> YOU'RE ON SHIFT <span>⏱ <b id="shiftTime">00:00</b></span><button id="pause" title="Pause game">Ⅱ</button><button id="sound" title="Toggle sound">SOUND OFF</button></div></header>
+<aside class="mission"><div class="eyebrow">YOUR NEXT MOVE <span>01 / DISPATCH</span></div><h1 id="missionTitle">The city is yours.</h1><p id="missionText">Take a spin. Your first order is on its way.</p><div class="mission-foot"><span id="statusDot">●</span><span id="missionStatus">WAITING FOR DISPATCH</span><b id="distance">FREE ROAM</b></div></aside>
+<aside class="stats"><div><span>CREDITS</span><b id="credits">R 0<span>.00</span></b></div><div><span>DELIVERED</span><b id="deliveries">00</b></div><div><span>WARNINGS</span><b id="warnings">○ ○</b></div></aside>
+<div class="district"><span>YOU ARE IN</span><b id="district">GARDENS</b><small>CAPE TOWN · FICTIONAL CITY</small></div>
+<div id="toast" role="status"></div>
+<div class="bottom"><div class="controls"><div class="eyebrow">MAKE YOUR ROUNDS</div><p><kbd>W</kbd><kbd>A</kbd><kbd>S</kbd><kbd>D</kbd> <span>or arrow keys to ride</span></p><p><kbd>SPACE</kbd> <span>brake</span><kbd>E</kbd> <span>interact</span><kbd>M</kbd> <span>map</span></p><div class="control-line"></div><small>No rush until you collect. Explore a little.</small></div>
+<section class="phone"><div class="phone-top"><span id="phoneClock">09:41</span><div class="notch"></div><span>▮▮▮ ▰</span></div><div class="phone-app"><b>sixty<span>60</span></b><small id="phoneMode">RIDER DISPATCH</small></div><div id="phoneContent"></div><div class="homebar"></div></section>
+<div class="speed"><div><b id="speed">0</b><span>KM/H</span></div><div class="speed-track"><i id="speedBar"></i></div><p><span id="gear">N</span> <small>CHECKERS SIXTY60</small></p></div></div>
+<div class="mobile"><button data-key="a">←</button><button data-key="d">→</button><button data-key="s">↓</button><button data-key="w">↑</button><button data-key="e">E</button></div>
+<div id="overlay" class="hidden"><div><span class="eyebrow" id="overlayLabel">SHIFT PAUSED</span><h2 id="overlayTitle">Catch your breath.</h2><p id="overlayText">Your deliveries can wait while the game is paused.</p><button id="resume">Back on the road ↗</button></div></div><script src="environment.js"></script><script src="town.js"></script><script src="vehicles.js"></script><script src="traffic.js"></script><script src="game.js"></script></body></html>
+
+
