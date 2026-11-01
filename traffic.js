@@ -14,19 +14,21 @@ function spawnTraffic(){cars.length=0;for(const j of trafficJunctions)j.owner=nu
 function upcomingJunction(car){let best=null,distance=Infinity;for(const j of trafficJunctions){if((car.horizontal?j.y:j.x)!==car.road)continue;const axis=car.horizontal?j.x:j.y,d=(axis-car.pos)*car.dir;if(d>0&&d<distance){best=j;distance=d}}return best}
 function forwardGap(car,obstacles,from=car.pos){let gap=Infinity;for(const b of obstacles){if(b.car===car)continue;const axis=car.horizontal?b.x:b.y,across=car.horizontal?b.y:b.x,halfAlong=car.horizontal?b.rx:b.ry,halfAcross=car.horizontal?b.ry:b.rx;
  if(Math.abs(across-car.lane)>=car.width/2+halfAcross+3)continue;const d=(axis-from)*car.dir;if(d>0)gap=Math.min(gap,d-halfAlong-car.length/2)}return gap}
+function entryHasSpace(j,car,obstacles){const axis=car.horizontal?j.x:j.y,stopGap=(axis-car.pos)*car.dir-110-car.length/2;return forwardGap(car,obstacles)>Math.max(0,stopGap)+TRAFFIC_GAP}
 function junctionOccupied(j,car,snapshot){return snapshot.some(b=>b.car!==car&&Math.abs(b.x-j.x)<b.rx+77&&Math.abs(b.y-j.y)<b.ry+77)}
 function exitHasSpace(j,car,obstacles){const axis=car.horizontal?j.x:j.y,exit=axis+car.dir*(110+car.length/2),candidate=carBounds({...car,pos:exit});return !obstacles.some(b=>b.car!==car&&boundsOverlap(candidate,b,TRAFFIC_GAP))&&forwardGap(car,obstacles,exit)>TRAFFIC_GAP}
 function trafficTick(dt,time,fleet=cars,stationary=parkedCars,includePlayer=true){const snapshot=fleet.map(carBounds),obstacles=snapshot.concat(stationary.map(carBounds));
  if(includePlayer){const ca=Math.cos(player.a),sa=Math.sin(player.a);obstacles.push({x:player.x,y:player.y,rx:Math.abs(ca)*17+Math.abs(sa)*8,ry:Math.abs(sa)*17+Math.abs(ca)*8,car:null})}
- // Clear reservations only after the rear has left the junction completely.
- for(const car of fleet)if(car.active){const j=car.active,axis=car.horizontal?j.x:j.y;if((car.pos-axis)*car.dir>110+car.length/2){if(j.owner===car)j.owner=null;car.active=null;car.waitingFor=null;car.stopHold=0}}
+ // Keep an entered crossing reserved until the rear clears. A blocked vehicle
+ // still behind the stop line must not reserve the crossing ahead of its leader.
+ for(const car of fleet)if(car.active){const j=car.active,axis=car.horizontal?j.x:j.y;if((car.pos-axis)*car.dir>110+car.length/2||((car.pos-axis)*car.dir+car.length/2<=-110&&!entryHasSpace(j,car,obstacles))){if(j.owner===car)j.owner=null;car.active=null;car.waitingFor=null;car.stopHold=0}}
  const plans=[];for(const car of fleet){let limit=Infinity,target=car.cruise??75,held=false;const gap=forwardGap(car,obstacles);if(gap<Infinity){limit=Math.max(0,gap-TRAFFIC_GAP);target=Math.min(target,Math.sqrt(2*TRAFFIC_BRAKE*Math.max(0,gap-TRAFFIC_GAP-3)))}
  const j=car.active?null:upcomingJunction(car);if(j){const axis=car.horizontal?j.x:j.y,stopGap=(axis-car.pos)*car.dir-110-car.length/2;
   if(stopGap<200){if(car.waitingFor!==j.id){car.waitingFor=j.id;car.stopHold=0;car.waitSince=time}
    if(stopGap<=3&&car.speed<1)car.stopHold+=dt;
    let eligible=j.signal?signalState(j,car.horizontal,time)==='green':car.stopHold>=1;
-   if(!j.signal&&eligible){const earlier=fleet.some(other=>other!==car&&other.waitingFor===j.id&&other.stopHold>=1&&(other.waitSince<car.waitSince||other.waitSince===car.waitSince&&other.id<car.id));if(earlier)eligible=false}
-   if(eligible&&stopGap<80&&!j.owner&&!junctionOccupied(j,car,snapshot)&&exitHasSpace(j,car,obstacles)){j.owner=car;car.active=j;car.waitingFor=null;car.stopHold=0;}
+   if(eligible&&stopGap<80&&entryHasSpace(j,car,obstacles)){const earlier=fleet.some(other=>other!==car&&!other.active&&other.waitingFor===j.id&&(other.waitSince<car.waitSince||other.waitSince===car.waitSince&&other.id<car.id)&&(j.signal?signalState(j,other.horizontal,time)==='green':other.stopHold>=1)&&(((other.horizontal?j.x:j.y)-other.pos)*other.dir-110-other.length/2)<80&&entryHasSpace(j,other,obstacles)&&exitHasSpace(j,other,obstacles));if(earlier)eligible=false}
+   if(eligible&&stopGap<80&&entryHasSpace(j,car,obstacles)&&!j.owner&&!junctionOccupied(j,car,snapshot)&&exitHasSpace(j,car,obstacles)){j.owner=car;car.active=j;car.waitingFor=null;car.stopHold=0;}
    else{held=true;limit=Math.min(limit,Math.max(0,stopGap));target=Math.min(target,Math.sqrt(2*TRAFFIC_BRAKE*Math.max(0,stopGap-2)));}
   }
  }
