@@ -34,3 +34,12 @@ html,body{height:100%;overscroll-behavior:none}button{-webkit-tap-highlight-colo
 .touch-layout .auto-drop-note{font-size:8px;max-width:61px}.touch-layout.phone-expanded .auto-drop-note{font-size:11px;max-width:100px}
 
 .touch-layout .gps-directions{position:static;margin:3px 4px 0;padding:5px}.touch-layout .nav-footer.delivery-footer{justify-content:center;text-align:center}.touch-layout.phone-expanded .gps-directions{position:static;margin:5px 7px 0;padding:8px}
+
+/* One-thumb driving trial: clear left corner, slim phone, joystick below it. */
+.touch-layout .ride-hud{left:var(--safe-left);bottom:var(--safe-bottom)}
+.touch-layout .phone{width:148px;height:calc(var(--game-height,100dvh) - 144px)}
+.touch-layout .phone-app{padding-left:6px;padding-right:6px}.touch-layout .phone-app>span{font-size:5.5px}
+.drive-joystick{position:absolute;right:calc(var(--safe-right) + 18px);bottom:var(--safe-bottom);width:112px;height:112px;border:1px solid #d9eee366;border-radius:50%;background:radial-gradient(circle,#244f4260,#143b3066);box-shadow:inset 0 2px 12px #061e2840;pointer-events:auto;touch-action:none}
+.joystick-track{position:absolute;inset:15px;border:1px solid #e5f5df35;border-radius:50%;pointer-events:none}
+.joystick-knob{position:absolute;left:34px;top:34px;width:44px;height:44px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#a3ddcbbf,#327f6bd9);border:1px solid #d4f6e5b3;box-shadow:0 3px 8px #082f2750;pointer-events:none}
+.touch-layout.phone-expanded .phone{width:min(260px,calc(100vw - 40px));height:calc(var(--game-height,100dvh) - 24px)}

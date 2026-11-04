@@ -37,3 +37,33 @@
 /* Directions sit beneath the map; the delivery clock is centred at the bottom. */
 .gps-directions{position:static;flex:0 0 auto;margin:5px 7px 0;padding:8px;box-shadow:none}.nav-footer.delivery-footer{justify-content:center;text-align:center}.nav-footer.delivery-footer>div{text-align:center}
 #overlay.game-over>div{width:min(420px,calc(100vw - 40px));max-width:420px;text-align:center;padding:36px 28px}#overlay.game-over .eyebrow{display:none}#overlay.game-over h2{font-size:clamp(52px,8vw,76px);line-height:1;letter-spacing:-1.2px;margin:0 0 15px}#overlay.game-over p{font-size:14px;line-height:1.6;margin:0 0 18px}#overlay.game-over button{min-height:46px;margin-top:0;padding:13px 24px}
+
+/* Still opening artwork based on the original reference composition. */
+#startScreen{position:fixed;inset:0;z-index:90;display:grid;place-items:center;background:var(--start-teal,#16aaa9);overflow:hidden}
+#startScreen[hidden]{display:none}
+.start-art{position:relative;width:min(100vw,127.85dvh);aspect-ratio:404/316}
+.start-still{display:block;width:100%;height:100%;object-fit:contain}
+#playGame{position:absolute;left:50%;bottom:5%;transform:translateX(-50%);background:transparent;border:0;border-radius:10px;color:#fff;font:800 clamp(36px,7dvh,62px) Arial,sans-serif;letter-spacing:.02em;padding:14px 48px;min-height:64px;cursor:pointer;box-shadow:none}
+#playGame:hover{background:#ffffff16}
+#playGame:focus-visible{outline:2px solid white;outline-offset:4px}
+.at-start .brand,.at-start .ride-hud,.at-start .phone,.at-start .touch-controls,.at-start .phone-shade,.at-start #toast,.at-start .vignette{visibility:hidden}
+@media(max-height:500px){#playGame{bottom:3%;font-size:36px;padding:8px 38px;min-height:52px}}
+
+#startScreen{--start-teal:#0faaab}
+
+.start-still{mask-image:linear-gradient(to right,transparent,#000 8%,#000 92%,transparent)}
+
+/* Pause contains one heading and the resume action. */
+#overlay:not(.game-over)>div{width:min(390px,calc(100vw - 40px));text-align:center;padding:30px 33px}
+#overlay:not(.game-over) .eyebrow,#overlay:not(.game-over) #overlayText{display:none}
+#overlay:not(.game-over) h2{font-size:clamp(44px,7vw,60px);line-height:1.1;margin:0 0 25px;font-weight:700}
+#overlay:not(.game-over) button{margin-top:0;min-height:46px}
+
+/* Brief vibration on arrival, then a gentle visible reminder until accepted. */
+.phone.new-order{animation:phone-arrival-shake .48s ease-in-out 3,phone-order-blink 1.8s ease-in-out infinite}
+.phone.new-order .phone-app{animation:phone-header-blink 1.8s ease-in-out infinite}
+.phone.new-order .phone-body>button{box-shadow:0 0 0 2px #7debb2}
+@keyframes phone-arrival-shake{0%,100%{translate:0 0}15%,45%,75%{translate:-3px 0}30%,60%,90%{translate:3px 0}}
+@keyframes phone-order-blink{0%,100%{box-shadow:0 8px 25px #0c251e38}50%{box-shadow:0 0 0 3px #77f0b3,0 0 24px #64e6aa80}}
+@keyframes phone-header-blink{0%,100%{background:transparent}50%{background:#8df2bc70}}
+@media(prefers-reduced-motion:reduce){.phone.new-order,.phone.new-order .phone-app{animation:none}.phone.new-order{box-shadow:0 0 0 3px #77f0b3}}

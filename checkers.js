@@ -30,7 +30,7 @@ R(47,204,380,47,'#0c7165');R(47,204,380,4,'#62bca3');T('Checkers',237,242,42,'#f
 
 // Entrance apron, bollards and customer parking: the entire lower row.
 R(0,285,468,143,'#626e67');R(0,285,468,16,'#c9c8af');for(let x=8;x<468;x+=16)L(x,286,x,299,'#afb7a0',.6);
-R(204,282,61,20,'#a5ad98');T('ENTRANCE',234,295,7,'#496b5b');
+R(204,282,61,20,'#a5ad98');
 for(const x of [192,278]){C(x+2,296,3,'#2b463e30');C(x,293,2.8,'#d9d7b8');C(x,293,1.2,'#446a59')}
 // Four numbered dedicated motorbike bays.
 R(8,303,125,69,'#167f6d');T('Sixty60  ·  COLLECTION',70,311,6.8,'#efffec','bold');
